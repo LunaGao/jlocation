@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    await loc.setProperty(1, 10);
+//    await loc.setProperty(1, 10);
   }
 
   @override

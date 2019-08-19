@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.xval.plugin.PluginPermissionHelper;
@@ -27,7 +28,6 @@ public final class JLocation implements EventChannel.StreamHandler {
     private Long minTime = null;
     private Float minDistance = null;
 
-    private final static String PROVIDER = LocationManager.GPS_PROVIDER;
     private final EventChannel mEventChannel;
     private LocationManager mLocationManager;
     private Context mContext;
@@ -83,10 +83,16 @@ public final class JLocation implements EventChannel.StreamHandler {
                 }
             };
 
-            Location loc = mLocationManager.getLastKnownLocation(PROVIDER);
+            String provider = LocationManager.GPS_PROVIDER;
+            List<String> providerList = mLocationManager.getProviders(true);
+            if(providerList.contains(LocationManager.NETWORK_PROVIDER)) {
+                provider = LocationManager.NETWORK_PROVIDER;
+            }
+
+            Location loc = mLocationManager.getLastKnownLocation(provider);
             onLocate(loc, true);
 
-            mLocationManager.requestLocationUpdates(PROVIDER,
+            mLocationManager.requestLocationUpdates(provider,
                     minTime == null ? MIN_TIME : minTime,
                     minDistance == null ? MIN_DISTANCE : minDistance,
                     mLocationListener,
@@ -180,7 +186,13 @@ public final class JLocation implements EventChannel.StreamHandler {
             }
         };
 
-        locationManager.requestLocationUpdates(PROVIDER,
+        String provider = LocationManager.GPS_PROVIDER;
+        List<String> providerList = mLocationManager.getProviders(true);
+        if(providerList.contains(LocationManager.NETWORK_PROVIDER)) {
+            provider = LocationManager.NETWORK_PROVIDER;
+        }
+
+        locationManager.requestLocationUpdates(provider,
                 1000, 5, listener, mContext.getMainLooper());
     }
 
