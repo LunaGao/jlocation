@@ -23,13 +23,18 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     var loc = new Jlocation();
-
-    await loc.onLocationChanged().listen((loc) {
+    loc.getLocation().then((loc) {
       setState(() {
         if (!mounted) return;
         _platformVersion = "${loc.last}=${loc.longitude},${loc.latitude}";
       });
     });
+//    await loc.onLocationChanged().listen((loc) {
+//      setState(() {
+//        if (!mounted) return;
+//        _platformVersion = "${loc.last}=${loc.longitude},${loc.latitude}";
+//      });
+//    });
 
 //    await loc.setProperty(1, 10);
   }

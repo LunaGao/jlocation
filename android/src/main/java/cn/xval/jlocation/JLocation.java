@@ -187,7 +187,7 @@ public final class JLocation implements EventChannel.StreamHandler {
         };
 
         String provider = LocationManager.GPS_PROVIDER;
-        List<String> providerList = mLocationManager.getProviders(true);
+        List<String> providerList = locationManager.getProviders(true);
         if(providerList.contains(LocationManager.NETWORK_PROVIDER)) {
             provider = LocationManager.NETWORK_PROVIDER;
         }
